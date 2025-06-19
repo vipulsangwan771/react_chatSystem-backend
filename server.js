@@ -24,7 +24,7 @@ const io = new Server(server, {
 });
 
 // Validate environment variables
-const requiredEnvVars = ['MONGO_URL', 'JWT_SECRET', 'CLIENT_URL'];
+const requiredEnvVars = ['MONGO_URL', 'JWT_SECRET'];
 const missingEnvVars = requiredEnvVars.filter((varName) => !process.env[varName]);
 if (missingEnvVars.length > 0) {
   console.error(`Missing environment variables: ${missingEnvVars.join(', ')}`);
