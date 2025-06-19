@@ -13,7 +13,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: process.env.CLIENT_URL || 'http://localhost:3000',
+    origin: process.env.CLIENT_URL || 'https://react-chatsystem.onrender.com',
     methods: ['GET', 'POST'],
     credentials: true,
   },
@@ -23,7 +23,7 @@ const io = new Server(server, {
 });
 
 // Validate environment variables
-const requiredEnvVars = ['MONGO_URL', 'JWT_SECRET', 'CLIENT_URL'];
+const requiredEnvVars = ['MONGO_URL', 'JWT_SECRET', 'https://react-chatsystem.onrender.com'];
 const missingEnvVars = requiredEnvVars.filter((varName) => !process.env[varName]);
 if (missingEnvVars.length > 0) {
   console.error(`Missing environment variables: ${missingEnvVars.join(', ')}`);
@@ -48,7 +48,7 @@ const logger = winston.createLogger({
 // Track online users
 const onlineUsers = new Set();
 
-app.use(cors({ origin: process.env.CLIENT_URL || 'http://localhost:3000', credentials: true }));
+app.use(cors({ origin: process.env.CLIENT_URL || 'https://react-chatsystem.onrender.com', credentials: true }));
 app.use(express.json());
 app.set('socketio', io);
 
