@@ -8,7 +8,7 @@ const winston = require('winston');
 const Message = require('./models/Message');
 
 dotenv.config();
-const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:3000/login';
+const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:3000';
 
 const app = express();
 const server = http.createServer(app);
