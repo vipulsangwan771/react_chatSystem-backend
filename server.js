@@ -8,7 +8,7 @@ const winston = require('winston');
 const Message = require('./models/Message');
 
 dotenv.config();
-const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:3000';
+const CLIENT_URL = process.env.CLIENT_URL || 'https://react-chatsystem.onrender.com';
 
 const app = express();
 const server = http.createServer(app);
