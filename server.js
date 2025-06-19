@@ -8,6 +8,7 @@ const winston = require('winston');
 const Message = require('./models/Message');
 
 dotenv.config();
+const CLIENT_URL = process.env.CLIENT_URL || 'https://react-chatsystem.onrender.com';
 
 const app = express();
 const server = http.createServer(app);
@@ -23,7 +24,7 @@ const io = new Server(server, {
 });
 
 // Validate environment variables
-const requiredEnvVars = ['MONGO_URL', 'JWT_SECRET', 'https://react-chatsystem.onrender.com'];
+const requiredEnvVars = ['MONGO_URL', 'JWT_SECRET', 'CLIENT_URL'];
 const missingEnvVars = requiredEnvVars.filter((varName) => !process.env[varName]);
 if (missingEnvVars.length > 0) {
   console.error(`Missing environment variables: ${missingEnvVars.join(', ')}`);
