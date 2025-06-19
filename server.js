@@ -14,7 +14,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: process.env.CLIENT_URL || 'https://react-chatsystem.onrender.com',
+    origin: CLIENT_URL || 'https://react-chatsystem.onrender.com',
     methods: ['GET', 'POST'],
     credentials: true,
   },
@@ -50,7 +50,7 @@ const logger = winston.createLogger({
 // Track online users
 const onlineUsers = new Set();
 
-app.use(cors({ origin: process.env.CLIENT_URL || 'https://react-chatsystem.onrender.com', credentials: true }));
+app.use(cors({ origin: CLIENT_URL || 'https://react-chatsystem.onrender.com', credentials: true }));
 app.use(express.json());
 app.set('socketio', io);
 
