@@ -1,3 +1,4 @@
+// routes/auth.js
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
@@ -7,7 +8,7 @@ const mongoose = require('mongoose');
 const User = require('../models/User');
 const Message = require('../models/Message');
 const verifyToken = require('../middleware/verifyToken');
-const { generalRateLimiter, refreshTokenLimiter } = require('../middleware/rateLimiter');
+const { generalRateLimiter, refreshTokenLimiter } = require('../middleware/rateLimiter'); // Assume this exists
 const logger = require('../utils/logger');
 
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -253,12 +254,26 @@ router.post(
     const { to, message } = req.body;
 
     try {
-      const recipient = await User.findById(to);
+      const myUser = await User.findById(from).select('following blocked');
+      if (!myUser) {
+        return sendResponse(res, 404, null, { message: 'Sender not found' });
+      }
+      if (myUser.blocked.some(id => id.toString() === to)) {
+        return sendResponse(res, 403, null, { message: 'You have blocked this user' });
+      }
+      if (!myUser.following.some(id => id.toString() === to)) {
+        return sendResponse(res, 403, null, { message: 'You must follow the user to message them' });
+      }
+
+      const recipient = await User.findById(to).select('blocked');
       if (!recipient) {
         logger.warn(`Message send failed: Recipient ${to} not found`);
         return sendResponse(res, 404, null, { message: 'Recipient not found' });
       }
-      logger.info(`Recipient found: ${recipient.email}`);
+      if (recipient.blocked.some(id => id.toString() === from)) {
+        return sendResponse(res, 403, null, { message: 'You are blocked by the recipient' });
+      }
+      logger.info(`Recipient found: ${to}`);
 
       const newMessage = new Message({ from, to, message, read: false });
       console.log('Saving message:', newMessage);

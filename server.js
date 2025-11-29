@@ -1,3 +1,4 @@
+// server.js
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -8,7 +9,7 @@ const winston = require('winston');
 const Message = require('./models/Message');
 
 dotenv.config();
-const CLIENT_URL = process.env.CLIENT_URL || 'https://react-chatsystem.onrender.com';
+const CLIENT_URL = process.env.CLIENT_URL  || 'https://react-chatsystem.onrender.com' || 'http://localhost:3000';
 
 const app = express();
 const server = http.createServer(app);
@@ -50,7 +51,7 @@ const logger = winston.createLogger({
 // Track online users
 const onlineUsers = new Set();
 
-app.use(cors({ origin: CLIENT_URL || 'https://react-chatsystem.onrender.com', credentials: true }));
+app.use(cors({ origin: CLIENT_URL  || 'https://react-chatsystem.onrender.com' || 'http://localhost:3000', credentials: true }));
 app.use(express.json());
 app.set('socketio', io);
 
@@ -166,6 +167,7 @@ io.on('connection', (socket) => {
 
 // Routes
 app.use('/api', require('./routes/auth'));
+app.use('/api', require('./routes/followRoutes'));
 
 // Health check
 app.get('/', (req, res) => res.json({ status: 'Server is running 🚀' }));
